@@ -23,15 +23,37 @@ else
     die "Env var HEROKU_BUILDPACK_GIT_LFS_REPO is not set"
 fi
 
+if [[ -f "$env_dir/HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY" ]]; then
+    ssh_key="$(< "$env_dir/HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY")"
+else
+    die "Env var HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
+fi
+
 if [[ -f "$env_dir/HEROKU_BUILDPACK_GIT_LFS_BRANCH" ]]; then
     branch="$(< "$env_dir/HEROKU_BUILDPACK_GIT_LFS_BRANCH")"
 else
     branch="master"
 fi
 
+git_user="${repo%@*}"
+git_host="${repo#*@}"
+git_host="${git_host%:*}"
+
 echo "-----> Download Git LFS assets"
 (
     pushd "$build_dir"
+
+    mkdir -p /app/.ssh
+    chmod 700 /app/.ssh
+    echo "${ssh_key}" | base64 --decode > /app/.ssh/id_rsa
+
+    echo -e "Host ${git_host}\n"\
+          " User ${git_user}\n"\
+          " IdentityFile /app/.ssh/id_rsa\n"\
+          " IdentitiesOnly yes\n"\
+          " UserKnownHostsFile=/dev/null\n"\
+          " StrictHostKeyChecking no"\
+          > /app/.ssh/config
 
     git version
     git-lfs version
