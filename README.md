@@ -14,12 +14,12 @@ To configure Git LFS for your Heroku app called `<myapp>`, run:
 
 Set the following environment variable for your app:
 
-* `HEROKU_BUILDPACK_GIT_LFS_REPO` to the clone URL of the repository
+* `BL_BUILDPACK_GIT_LFS_REPO` to the clone URL of the repository
   from which to download Git LFS assets. This should include any
   username, password, or personal access token which is necessary to
   clone noninteractively. See [here][noninteractive-clone] for
   details on the syntax. It must be something like `git@github.com:BureauxLocaux/my-repo`
-* `HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You can use `heroku config:set --app preprod-bureauxlocaux "HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat ~/.ssh/heroku_deploy_lfs | base64 -w 0)"` to set it.
+* `BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You can use `heroku config:set --app preprod-bureauxlocaux "BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat ~/.ssh/heroku_deploy_lfs | base64 -w 0)"` to set it.
 
 After the next time you deploy your app, Git LFS assets will be
 downloaded and checked out automatically, and Git LFS will be

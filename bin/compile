@@ -17,16 +17,16 @@ function indent {
     sed -u 's/^/       /'
 }
 
-if [[ -f "$env_dir/HEROKU_BUILDPACK_GIT_LFS_REPO" ]]; then
-    repo="$(< "$env_dir/HEROKU_BUILDPACK_GIT_LFS_REPO")"
+if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_REPO" ]]; then
+    repo="$(< "$env_dir/BL_BUILDPACK_GIT_LFS_REPO")"
 else
-    die "Env var HEROKU_BUILDPACK_GIT_LFS_REPO is not set"
+    die "Env var BL_BUILDPACK_GIT_LFS_REPO is not set"
 fi
 
-if [[ -f "$env_dir/HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY" ]]; then
-    ssh_key="$(< "$env_dir/HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY")"
+if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY" ]]; then
+    ssh_key="$(< "$env_dir/BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY")"
 else
-    die "Env var HEROKU_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
+    die "Env var BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
 fi
 
 git_user="${repo%@*}"
