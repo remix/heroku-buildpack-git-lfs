@@ -29,6 +29,25 @@ else
     die "Env var BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
 fi
 
+include_paths=""
+if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS" ]]; then
+    include_paths="--include=$(< "$env_dir/BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS")"
+fi
+
+exclude_paths=""
+if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS" ]]; then
+    exclude_paths="--exclude=$(< "$env_dir/BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS")"
+fi
+
+echo "-----> Install Git LFS"
+(
+    pushd /tmp
+    wget https://github.com/git-lfs/git-lfs/releases/download/v2.11.0/git-lfs-linux-amd64-v2.11.0.tar.gz \
+         -O git-lfs.tar.gz
+    tar -xvzf /tmp/git-lfs.tar.gz
+    popd
+) | indent
+
 git_user="${repo%@*}"
 git_host="${repo#*@}"
 git_host="${git_host%:*}"
@@ -36,6 +55,15 @@ git_host="${git_host%:*}"
 echo "-----> Download Git LFS assets"
 (
     pushd "$build_dir"
+
+    mkdir -p .heroku/bin
+    mv /tmp/git-lfs .heroku/bin/
+
+    mkdir -p .profile.d
+    cat <<"EOF" > .profile.d/heroku-buildpack-git-lfs.sh
+export PATH="$HOME/.heroku/bin:$PATH"
+EOF
+    export PATH="$build_dir/.heroku/bin:$PATH"
 
     mkdir -p /app/.ssh
     chmod 700 /app/.ssh
@@ -57,6 +85,9 @@ echo "-----> Download Git LFS assets"
     git fetch origin
     git reset --mixed "$SOURCE_VERSION"
     git lfs install
-    git lfs pull
+    # Monorepo compatibility - only pull large files in the sub-project of the monorepo
+    git lfs pull "$include_paths" "$exclude_paths"
+
     rm -rf .git
+    rm -rf /app/.ssh
 ) | indent

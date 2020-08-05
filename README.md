@@ -19,13 +19,23 @@ Set the following environment variable for your app:
   username, password, or personal access token which is necessary to
   clone noninteractively. See [here][noninteractive-clone] for
   details on the syntax. It must be something like `git@github.com:BureauxLocaux/my-repo`
-* `BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You can use `heroku config:set --app preprod-bureauxlocaux "BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat ~/.ssh/heroku_deploy_lfs | base64 -w 0)"` to set it.
+* `BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You
+  can use `heroku config:set --app preprod-bureauxlocaux "BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat
+  ~/.ssh/heroku_deploy_lfs | base64 -w 0)"` to set it.
+* `BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
+  include in the fetch. Passed via the `--include` flag to `git lfs pull`
+* `BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
+  exclude in the fetch. Passed via the `--exclude` flag to `git lfs pull`
+
 
 After the next time you deploy your app, Git LFS assets will be
 downloaded and checked out automatically, and Git LFS will be
 available on `PATH` for your app.
 
-Inspiration was taken from [the original repo](https://github.com/raxod502/heroku-buildpack-git-lfs) and [a buildpack to use SSH keys][git-ssh-key-buildpack]. This repository allows you to rely on deploy SSH keys to pull LFS files instead of requiring tokens.
+Inspiration was taken from [the original repo](https://github.com/raxod502/heroku-buildpack-git-lfs)
+and [a buildpack to use SSH keys][git-ssh-key-buildpack]. This repository allows you to rely on
+deploy SSH keys to pull LFS files instead of requiring tokens. Also, added support to optionally
+specify relative paths of files to include/exclude when fetching lfs objects.
 
 [buildpacks]: https://devcenter.heroku.com/articles/buildpacks
 [git-lfs]: https://git-lfs.github.com/
