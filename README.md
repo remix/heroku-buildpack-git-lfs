@@ -14,17 +14,17 @@ To configure Git LFS for your Heroku app called `<myapp>`, run:
 
 Set the following environment variable for your app:
 
-* `BL_BUILDPACK_GIT_LFS_REPO` to the clone URL of the repository
+* `BUILDPACK_GIT_LFS_REPO` to the clone URL of the repository
   from which to download Git LFS assets. This should include any
   username, password, or personal access token which is necessary to
   clone noninteractively. See [here][noninteractive-clone] for
-  details on the syntax. It must be something like `git@github.com:BureauxLocaux/my-repo`
-* `BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You
-  can use `heroku config:set --app preprod-bureauxlocaux "BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat
+  details on the syntax. It must be something like `git@github.com:remix/remix`
+* `BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY`: your private key encoded in base64 with `base64 -w 0`. You
+  can use `heroku config:set --app preprod-bureauxlocaux "BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY=$(cat
   ~/.ssh/heroku_deploy_lfs | base64 -w 0)"` to set it.
-* `BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
+* `BUILDPACK_GIT_LFS_INCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
   include in the fetch. Passed via the `--include` flag to `git lfs pull`
-* `BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
+* `BUILDPACK_GIT_LFS_EXCLUDE_PATHS`: (OPTIONAL) a comma-separated list of (relative) paths to
   exclude in the fetch. Passed via the `--exclude` flag to `git lfs pull`
 
 

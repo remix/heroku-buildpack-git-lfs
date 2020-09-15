@@ -17,26 +17,26 @@ function indent {
     sed -u 's/^/       /'
 }
 
-if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_REPO" ]]; then
-    repo="$(< "$env_dir/BL_BUILDPACK_GIT_LFS_REPO")"
+if [[ -f "$env_dir/BUILDPACK_GIT_LFS_REPO" ]]; then
+    repo="$(< "$env_dir/BUILDPACK_GIT_LFS_REPO")"
 else
-    die "Env var BL_BUILDPACK_GIT_LFS_REPO is not set"
+    die "Env var BUILDPACK_GIT_LFS_REPO is not set"
 fi
 
-if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY" ]]; then
-    ssh_key="$(< "$env_dir/BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY")"
+if [[ -f "$env_dir/BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY" ]]; then
+    ssh_key="$(< "$env_dir/BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY")"
 else
-    die "Env var BL_BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
+    die "Env var BUILDPACK_GIT_LFS_SSH_PRIVATE_KEY is not set"
 fi
 
 include_paths=""
-if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS" ]]; then
-    include_paths="--include=$(< "$env_dir/BL_BUILDPACK_GIT_LFS_INCLUDE_PATHS")"
+if [[ -f "$env_dir/BUILDPACK_GIT_LFS_INCLUDE_PATHS" ]]; then
+    include_paths="--include=$(< "$env_dir/BUILDPACK_GIT_LFS_INCLUDE_PATHS")"
 fi
 
 exclude_paths=""
-if [[ -f "$env_dir/BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS" ]]; then
-    exclude_paths="--exclude=$(< "$env_dir/BL_BUILDPACK_GIT_LFS_EXCLUDE_PATHS")"
+if [[ -f "$env_dir/BUILDPACK_GIT_LFS_EXCLUDE_PATHS" ]]; then
+    exclude_paths="--exclude=$(< "$env_dir/BUILDPACK_GIT_LFS_EXCLUDE_PATHS")"
 fi
 
 echo "-----> Install Git LFS"
