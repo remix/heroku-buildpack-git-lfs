@@ -42,7 +42,7 @@ fi
 echo "-----> Install Git LFS"
 (
     pushd /tmp
-    wget https://github.com/git-lfs/git-lfs/releases/download/v2.11.0/git-lfs-linux-amd64-v2.11.0.tar.gz \
+    wget -nv https://github.com/git-lfs/git-lfs/releases/download/v2.11.0/git-lfs-linux-amd64-v2.11.0.tar.gz \
          -O git-lfs.tar.gz
     tar -xvzf /tmp/git-lfs.tar.gz
     popd
@@ -52,7 +52,7 @@ git_user="${repo%@*}"
 git_host="${repo#*@}"
 git_host="${git_host%:*}"
 
-echo "-----> Download Git LFS assets"
+echo "-----> Download Git LFS assets ($SOURCE_VERSION)"
 (
     pushd "$build_dir"
 
@@ -82,8 +82,8 @@ EOF
 
     git init
     git remote add origin "$repo"
-    git fetch origin
-    git reset --mixed "$SOURCE_VERSION"
+    git fetch -q origin
+    git reset -q --mixed "$SOURCE_VERSION"
     git lfs install
     # Monorepo compatibility - only pull large files in the sub-project of the monorepo
     git lfs pull "$include_paths" "$exclude_paths"
